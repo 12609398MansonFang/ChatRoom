@@ -1,5 +1,6 @@
 import axios from 'axios'
 import type { Message } from '../types/message'
+import type { User } from '../types/user'
 
 const API_URL = 'http://localhost:5233'
 
@@ -22,4 +23,14 @@ export async function deleteMessage(messageId: number): Promise<void> {
     console.error('Error deleting message:', error);
     // Handle error if deletion fails
   }
+}
+
+
+export async function getUsers(): Promise<User[]>{
+  const response = await axios.get<User[]>(`${API_URL}/users`)
+  return response.data;
+}
+
+export async function addMessage(inputUser: User): Promise<void> {
+  await axios.post(`${API_URL}/users`, inputUser)
 }

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChatRoom.Api.Data.Migrations
 {
     [DbContext(typeof(ChatRoomContext))]
-    [Migration("20240612173032_InitialCreate")]
+    [Migration("20240612180042_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

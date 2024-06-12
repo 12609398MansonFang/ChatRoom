@@ -120,3 +120,4 @@ C:\Users\spart\OneDrive\Documents\Manson Work\ChatRoom\ChatRoom.Api\obj\Debug\ne
 C:\Users\spart\OneDrive\Documents\Manson Work\ChatRoom\ChatRoom.Api\obj\Debug\net8.0\ChatRoom.Api.pdb
 C:\Users\spart\OneDrive\Documents\Manson Work\ChatRoom\ChatRoom.Api\obj\Debug\net8.0\ChatRoom.Api.genruntimeconfig.cache
 C:\Users\spart\OneDrive\Documents\Manson Work\ChatRoom\ChatRoom.Api\obj\Debug\net8.0\ref\ChatRoom.Api.dll
+C:\Users\spart\OneDrive\Documents\Manson Work\ChatRoom\ChatRoom.Api\obj\Debug\net8.0\ChatRoom.Api.sourcelink.json

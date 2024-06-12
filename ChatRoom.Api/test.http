@@ -20,6 +20,6 @@ POST http://localhost:5233/users
 Content-Type: application/json
 
 {
-    "UserName":"Account1",
-    "UserEmail":"account1@test.com"
+    "UserName":"Account2",
+    "UserEmail":"account2@test.com"
 }

@@ -1,0 +1,25 @@
+GET http://localhost:5233/messages
+
+###
+DELETE http://localhost:5233/messages/10
+
+###
+POST http://localhost:5233/messages
+Content-Type: application/json
+
+{
+    "MessageText":"Test"
+}
+
+###
+GET http://localhost:5233/users
+
+###
+
+POST http://localhost:5233/users
+Content-Type: application/json
+
+{
+    "UserName":"Account1",
+    "UserEmail":"account1@test.com"
+}

@@ -31,6 +31,6 @@ export async function getUsers(): Promise<User[]>{
   return response.data;
 }
 
-export async function addMessage(inputUser: User): Promise<void> {
+export async function addUser(inputUser: User): Promise<void> {
   await axios.post(`${API_URL}/users`, inputUser)
 }

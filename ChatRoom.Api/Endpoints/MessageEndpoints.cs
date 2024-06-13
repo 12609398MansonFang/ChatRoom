@@ -43,6 +43,7 @@ public static class MessageEndpoints
 
                 var message = new Message
                 {
+                    MessageUserId = createMessageDto.MessageUserId,
                     MessageText = createMessageDto.MessageText
                 };
 

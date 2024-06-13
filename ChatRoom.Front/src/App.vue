@@ -3,7 +3,7 @@
     <div class='UserContainer flex flex-col justify-end bg-slate-100 w-1/5 h-3/4 p-5'>
 
         <div class="UserDisplay" v-for="user in users" :key="user.userId">
-          <button class="Users">{{ user.userId }} : {{ user.userName }} - {{ user.userEmail }}</button>
+          <button class="Users hover:bg-orange-400" @click="handleUserClick(user)">{{ user.userId }} : {{ user.userName }} - {{ user.userEmail }}</button>
         </div>
 
         <div class="UserCreate flex flex-col justify-between">
@@ -23,9 +23,15 @@
       <div class="MessageDisplay py-2 overflow-y-scroll">
 
         <div class="MessageText flex justify-between" v-for="message in messages" :key="message.messageId">
-          <p class="TextContainer">{{ message.messageText }}</p>    
-          <button @click="handleDeleteMessageClick(message.messageId)" class="DeleteButton font-light text-gray-500" >Delete</button>
+          <div :class="{'flex justify-end text-right w-full': checkMessage(message), 'flex justify-start text-left w-full': !checkMessage(message)}">
+            <div class="flex flex-col">
+              <p> {{getUserName(message.messageUserId)}}</p>
+              <p :class="{'bg-emerald-300 p-2 rounded-xl': checkMessage(message), 'bg-red-300 p-2 rounded-xl': !checkMessage(message)}">{{ message.messageText }}</p>
+            </div>
+          </div>
         </div>
+
+
         
       </div>
 
@@ -37,6 +43,8 @@
       </div>
 
     </div>
+
+    <div>Current Account Selected: {{ currentUser }}</div>
   </div>
 </template>
 
@@ -51,16 +59,18 @@ import type { User } from '../src/types/user'
 
 let messages = ref<Message[]>([]) 
 let users = ref<User[]>([])
+let currentUser = ref<number>(0)
+let messageCheck = ref<boolean>(false)
 
-const inputValue = ref<string>('');
-const inputName = ref<string>('');
-const inputEmail = ref<string>('');
-
+const inputValue = ref<string>('')
+const inputName = ref<string>('')
+const inputEmail = ref<string>('')
 
 onMounted(async () => {
   messages.value = (await getMessages()).map(message => ({
       messageId: message.messageId,
-      messageText: message.messageText,
+      messageUserId: message.messageUserId,
+      messageText: message.messageText
   }))
 
   users.value = (await getUsers()).map(user => ({
@@ -77,17 +87,17 @@ const handleSendMessageClick = () => {
   if (inputValue.value.trim() !== '') {
     if (messages.value.length > 0) {
       const lastMessageId = messages.value[messages.value.length - 1].messageId
-      newMessage = { messageId: lastMessageId + 1, messageText: inputValue.value }
+      newMessage = { messageId: lastMessageId + 1, messageUserId: currentUser.value, messageText: inputValue.value }
     } else {
-      newMessage = { messageId: 1, messageText: inputValue.value }
+      newMessage = { messageId: 1, messageUserId: currentUser.value, messageText: inputValue.value }
     }
 
     sendMessage(newMessage)
     messages.value.push(newMessage)
-    inputValue.value = '' // Clear the input field
+    inputValue.value = '' 
   } else {
     alert('Input Empty');
-    inputValue.value = '' // Clear the input field even if the input is empty
+    inputValue.value = '' 
   }
 }
 
@@ -118,7 +128,18 @@ const handleAddUserClick = () => {
   }
 }
 
+const handleUserClick = (user: User) => {
+  currentUser.value = user.userId
+}
 
+const checkMessage = (message: Message) => {
+  return currentUser.value === message.messageUserId
+}
+
+const getUserName = (userId: number) => {
+  const username = users.value.find(u => u.userId === userId)
+  return username ? username.userName : 'Unknown User'
+}
 
 
 </script>

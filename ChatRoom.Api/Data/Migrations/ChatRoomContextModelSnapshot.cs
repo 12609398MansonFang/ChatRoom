@@ -25,6 +25,9 @@ namespace ChatRoom.Api.Data.Migrations
                     b.Property<string>("MessageText")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("MessageUserId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("MessageId");
 
                     b.ToTable("Messages");
@@ -33,7 +36,8 @@ namespace ChatRoom.Api.Data.Migrations
                         new
                         {
                             MessageId = 1,
-                            MessageText = "Hello"
+                            MessageText = "Hello",
+                            MessageUserId = 0
                         });
                 });
 

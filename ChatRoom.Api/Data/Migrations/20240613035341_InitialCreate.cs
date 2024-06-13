@@ -16,6 +16,7 @@ namespace ChatRoom.Api.Data.Migrations
                 {
                     MessageId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    MessageUserId = table.Column<int>(type: "INTEGER", nullable: false),
                     MessageText = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -39,8 +40,8 @@ namespace ChatRoom.Api.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Messages",
-                columns: new[] { "MessageId", "MessageText" },
-                values: new object[] { 1, "Hello" });
+                columns: new[] { "MessageId", "MessageText", "MessageUserId" },
+                values: new object[] { 1, "Hello", 0 });
         }
 
         /// <inheritdoc />

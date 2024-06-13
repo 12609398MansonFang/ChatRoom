@@ -12,7 +12,7 @@ public class ChatRoomContext(DbContextOptions<ChatRoomContext> options)
 
     protected override void OnModelCreating(ModelBuilder modelBuilder){
         modelBuilder.Entity<Message>().HasData(
-            new { MessageId = 1, MessageText = "Hello" }
+            new { MessageId = 1, MessageUserId = 0, MessageText = "Hello" }
         );
     }
     

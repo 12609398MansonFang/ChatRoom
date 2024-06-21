@@ -1,25 +1,22 @@
 GET http://localhost:5233/messages
 
 ###
-DELETE http://localhost:5233/messages/10
+DELETE http://localhost:5233/messages/
 
 ###
 POST http://localhost:5233/messages
 Content-Type: application/json
 
 {
-    "MessageText":"Test"
+    "MessageUserId":"3",
+    "MessageText":"FrontEnd"
 }
 
 ###
 GET http://localhost:5233/users
 
 ###
+GET http://localhost:5233/rooms
 
-POST http://localhost:5233/users
-Content-Type: application/json
-
-{
-    "UserName":"Account2",
-    "UserEmail":"account2@test.com"
-}
+###
+GET http://localhost:5233/rooms/1

@@ -30,6 +30,7 @@ public static class UserEndpoints
                 {
                     UserName = createUserDto.UserName,
                     UserEmail = createUserDto.UserEmail,
+                    UserPassword = createUserDto.UserPassword
                 };
 
                 dbContext.Users.Add(user);
@@ -41,13 +42,36 @@ public static class UserEndpoints
             }
             catch (Exception ex)
             {
-                // Log the exception (you can use any logging framework, here we use Console for simplicity)
                 Console.WriteLine($"Error: {ex.Message}");
                 return Results.Problem("An error occurred while processing your request.");
             }
         });
-        
-        
+
+        group.MapPost("/login", (LogIntoUserDto logIntoUserDto, ChatRoomContext dbContext) => 
+        {
+            try
+            {
+                var user = dbContext.Users.SingleOrDefault(u => u.UserEmail == logIntoUserDto.UserEmail);
+                if (user == null)
+                {
+                    Console.WriteLine("User not found.");
+                    return Results.NotFound();
+                } else if (logIntoUserDto.UserPassword == user.UserPassword){
+                    Console.WriteLine("Password match. Fetching user data.");
+                    var userDto = user.ToDto();
+                    return Results.Ok(userDto);
+                } else {
+                    Console.WriteLine("Invalid password.");
+                    return Results.Unauthorized();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return Results.Problem("An error occurred while processing your request.");
+            }
+        });
+
         return group;
     }
 }

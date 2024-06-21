@@ -24,6 +24,7 @@ app.UseCors("AllowVueApp");
 
 app.MapMessageEndpoints();
 app.MapUserEndpoints();
+app.MapRoomEndpoints();
 app.MigrateDb();
 
 app.Run();

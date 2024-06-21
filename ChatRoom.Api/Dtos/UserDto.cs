@@ -1,5 +1,7 @@
 namespace ChatRoom.Api.Dtos;
 
-public record class UserDto(int UserId, string? UserName, string? UserEmail);
+public record class UserDto(int UserId, string? UserName, string? UserEmail, string? UserPassword);
 
-public record class CreateUserDto(string? UserName, string? UserEmail);
+public record class CreateUserDto(string? UserName, string? UserEmail, string? UserPassword);
+
+public record class LogIntoUserDto(string? UserEmail, string? UserPassword);

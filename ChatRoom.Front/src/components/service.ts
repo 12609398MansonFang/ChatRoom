@@ -4,6 +4,7 @@ import type { User } from '../types/user'
 
 const API_URL = 'http://localhost:5233'
 
+// Messages
 
 export async function getMessages(): Promise<Message[]> {
   const response = await axios.get<Message[]>(`${API_URL}/messages`)
@@ -25,6 +26,7 @@ export async function deleteMessage(messageId: number): Promise<void> {
   }
 }
 
+// Users
 
 export async function getUsers(): Promise<User[]>{
   const response = await axios.get<User[]>(`${API_URL}/users`)
@@ -33,4 +35,14 @@ export async function getUsers(): Promise<User[]>{
 
 export async function addUser(inputUser: User): Promise<void> {
   await axios.post(`${API_URL}/users`, inputUser)
+}
+
+export async function loginUser(loginUser: User): Promise<void> {
+  await axios.post(`${API_URL}/users/login`, loginUser.userEmail, loginUser.userPassword)
+}
+
+// Chats
+export async function getRooms(Id: number): Promise<any[]> { 
+  const response = await axios.get(`${API_URL}/rooms/${Id}`)
+  return response.data;
 }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChatRoom.Api.Data.Migrations
 {
     [DbContext(typeof(ChatRoomContext))]
-    [Migration("20240621073943_SeedMessages")]
-    partial class SeedMessages
+    [Migration("20240623222231_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,9 @@ namespace ChatRoom.Api.Data.Migrations
                 {
                     b.Property<int>("MessageId")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("MessageRoomId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("MessageText")
@@ -39,8 +42,44 @@ namespace ChatRoom.Api.Data.Migrations
                         new
                         {
                             MessageId = 1,
-                            MessageText = "Hello",
+                            MessageRoomId = 1,
+                            MessageText = "This message is for Admins",
                             MessageUserId = 1
+                        },
+                        new
+                        {
+                            MessageId = 2,
+                            MessageRoomId = 2,
+                            MessageText = "This message is for Developers",
+                            MessageUserId = 2
+                        },
+                        new
+                        {
+                            MessageId = 3,
+                            MessageRoomId = 2,
+                            MessageText = "This message is for Developers",
+                            MessageUserId = 3
+                        },
+                        new
+                        {
+                            MessageId = 4,
+                            MessageRoomId = 3,
+                            MessageText = "This message is for Everyone",
+                            MessageUserId = 1
+                        },
+                        new
+                        {
+                            MessageId = 5,
+                            MessageRoomId = 3,
+                            MessageText = "This message is for Everyone",
+                            MessageUserId = 2
+                        },
+                        new
+                        {
+                            MessageId = 6,
+                            MessageRoomId = 3,
+                            MessageText = "This message is for Everyone",
+                            MessageUserId = 3
                         });
                 });
 

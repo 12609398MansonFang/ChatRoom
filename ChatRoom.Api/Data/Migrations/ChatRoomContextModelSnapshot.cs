@@ -22,6 +22,9 @@ namespace ChatRoom.Api.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("MessageRoomId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("MessageText")
                         .HasColumnType("TEXT");
 
@@ -36,8 +39,44 @@ namespace ChatRoom.Api.Data.Migrations
                         new
                         {
                             MessageId = 1,
-                            MessageText = "Hello",
+                            MessageRoomId = 1,
+                            MessageText = "This message is for Admins",
                             MessageUserId = 1
+                        },
+                        new
+                        {
+                            MessageId = 2,
+                            MessageRoomId = 2,
+                            MessageText = "This message is for Developers",
+                            MessageUserId = 2
+                        },
+                        new
+                        {
+                            MessageId = 3,
+                            MessageRoomId = 2,
+                            MessageText = "This message is for Developers",
+                            MessageUserId = 3
+                        },
+                        new
+                        {
+                            MessageId = 4,
+                            MessageRoomId = 3,
+                            MessageText = "This message is for Everyone",
+                            MessageUserId = 1
+                        },
+                        new
+                        {
+                            MessageId = 5,
+                            MessageRoomId = 3,
+                            MessageText = "This message is for Everyone",
+                            MessageUserId = 2
+                        },
+                        new
+                        {
+                            MessageId = 6,
+                            MessageRoomId = 3,
+                            MessageText = "This message is for Everyone",
+                            MessageUserId = 3
                         });
                 });
 

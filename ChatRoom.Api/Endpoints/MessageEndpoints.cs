@@ -32,7 +32,7 @@ public static class MessageEndpoints
             return Results.NoContent();
         });
 
-        group.MapPost("/", (CreateMessageDto createMessageDto, ChatRoomContext dbContext) => 
+        group.MapPost("/create/{roomId}", (int roomId, CreateMessageDto createMessageDto, ChatRoomContext dbContext) => 
         {
             try
             {
@@ -44,6 +44,7 @@ public static class MessageEndpoints
                 var message = new Message
                 {
                     MessageUserId = createMessageDto.MessageUserId,
+                    MessageRoomId = createMessageDto.MessageRoomId,
                     MessageText = createMessageDto.MessageText
                 };
 
@@ -52,7 +53,7 @@ public static class MessageEndpoints
 
                 var messageDto = message.ToDto();
 
-                return Results.Created($"/messages/{message.MessageId}", messageDto);
+                return Results.Created($"/messages/create/{message.MessageRoomId}", messageDto);
             }
             catch (Exception ex)
             {

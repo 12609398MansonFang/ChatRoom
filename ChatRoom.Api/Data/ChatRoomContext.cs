@@ -13,7 +13,12 @@ public class ChatRoomContext(DbContextOptions<ChatRoomContext> options)
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Message>().HasData(
-                new Message { MessageId = 1, MessageUserId = 1, MessageText = "Hello" }
+                new Message { MessageId = 1, MessageRoomId = 1, MessageUserId = 1, MessageText = "This message is for Admins" },
+                new Message { MessageId = 2, MessageRoomId = 2, MessageUserId = 2, MessageText = "This message is for Developers" },
+                new Message { MessageId = 3, MessageRoomId = 2, MessageUserId = 3, MessageText = "This message is for Developers" },
+                new Message { MessageId = 4, MessageRoomId = 3, MessageUserId = 1, MessageText = "This message is for Everyone" },
+                new Message { MessageId = 5, MessageRoomId = 3, MessageUserId = 2, MessageText = "This message is for Everyone" },
+                new Message { MessageId = 6, MessageRoomId = 3, MessageUserId = 3, MessageText = "This message is for Everyone" }
             );
             modelBuilder.Entity<User>().HasData(
                 new User { UserId = 1, UserName = "Admin", UserEmail = "admin@test.com", UserPassword = "admin" },

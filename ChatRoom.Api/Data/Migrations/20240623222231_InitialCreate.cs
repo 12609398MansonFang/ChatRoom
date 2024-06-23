@@ -19,6 +19,7 @@ namespace ChatRoom.Api.Data.Migrations
                     MessageId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     MessageUserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    MessageRoomId = table.Column<int>(type: "INTEGER", nullable: false),
                     MessageText = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -58,8 +59,16 @@ namespace ChatRoom.Api.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Messages",
-                columns: new[] { "MessageId", "MessageText", "MessageUserId" },
-                values: new object[] { 1, "Hello", 1 });
+                columns: new[] { "MessageId", "MessageRoomId", "MessageText", "MessageUserId" },
+                values: new object[,]
+                {
+                    { 1, 1, "This message is for Admins", 1 },
+                    { 2, 2, "This message is for Developers", 2 },
+                    { 3, 2, "This message is for Developers", 3 },
+                    { 4, 3, "This message is for Everyone", 1 },
+                    { 5, 3, "This message is for Everyone", 2 },
+                    { 6, 3, "This message is for Everyone", 3 }
+                });
 
             migrationBuilder.InsertData(
                 table: "Rooms",

@@ -4,12 +4,13 @@ GET http://localhost:5233/messages
 DELETE http://localhost:5233/messages/
 
 ###
-POST http://localhost:5233/messages
+POST http://localhost:5233/messages/create/1
 Content-Type: application/json
 
 {
     "MessageUserId":"3",
-    "MessageText":"FrontEnd"
+    "MessageRoomId":"2",
+    "MessageText":"test test test"
 }
 
 ###

@@ -7,7 +7,7 @@ public static class MessageMapping
 {
     public static MessageDto ToDto(this Message message)
     {    
-        return new MessageDto(message.MessageId, message.MessageUserId, message.MessageText);
+        return new MessageDto(message.MessageId, message.MessageUserId, message.MessageRoomId, message.MessageText);
     }
 
 

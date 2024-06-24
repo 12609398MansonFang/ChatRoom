@@ -18,6 +18,14 @@ public static class MessageEndpoints
             return Results.Ok(messageDtos);
         });
 
+        group.MapGet("/{roomId}", (int roomId, ChatRoomContext dbContext) => {
+            var messages = dbContext.Messages
+                .Where(m => m.MessageRoomId == roomId)
+                .ToList();
+            var messageDtos = messages.Select(message => message.ToDto());
+            return Results.Ok(messageDtos);
+            });
+
         group.MapDelete("/{id}", (int id, ChatRoomContext dbContext) => 
         {
             var message = dbContext.Messages.Find(id);
@@ -32,7 +40,7 @@ public static class MessageEndpoints
             return Results.NoContent();
         });
 
-        group.MapPost("/create/{roomId}", (int roomId, CreateMessageDto createMessageDto, ChatRoomContext dbContext) => 
+        group.MapPost("/create", (CreateMessageDto createMessageDto, ChatRoomContext dbContext) => 
         {
             try
             {

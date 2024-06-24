@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ChatRoom.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b25d407098c369c50bc46240096b9df005773f4e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+47c75abc5c4542343ebdc3c28c715177b2f01a73")]
 [assembly: System.Reflection.AssemblyProductAttribute("ChatRoom.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ChatRoom.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

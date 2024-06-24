@@ -1,6 +1,7 @@
 import axios from 'axios'
 import type { Message } from '../types/message'
 import type { User } from '../types/user'
+import type { Room } from '@/types/room'
 
 const API_URL = 'http://localhost:5233'
 
@@ -11,8 +12,13 @@ export async function getMessages(): Promise<Message[]> {
   return response.data;
 }
 
+export async function getUserMessages( roomId: number ): Promise<Message[]> {
+  const response = await axios.get(`${API_URL}/messages/${roomId}`)
+  return response.data;
+}
+
 export async function sendMessage(inputMessage: Message): Promise<void> {
-  await axios.post(`${API_URL}/messages`, inputMessage)
+  await axios.post(`${API_URL}/messages/create`, inputMessage)
 }
 
 export async function deleteMessage(messageId: number): Promise<void> {

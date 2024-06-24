@@ -3,6 +3,7 @@
         <div class="LogInContainer h-1/2 w-2/3 flex p-2 shadow-2xl shadow-emerald-800">
             <div class="ContainerDisplay w-3/5">
                 {{logInMessage}}
+                <p v-for="user in users" :key="user.userId"> User Email: {{ user.userEmail }} User Password: {{ user.userPassword }} </p>
             </div>
             <div class="ContainerInputs w-2/5 flex flex-col justify-center items-center gap-6">
                 <div class="LogIn flex flex-col justify-center items-center gap-2">
@@ -20,7 +21,8 @@
                 </div>
 
                 <div class="Create flex flex-col justify-center items-center gap-2">
-                    <button class="Title font-bold text-l hover:text-slate-400" @click="handleCreateAnAccount">Create An Account</button>
+                    <button class="Title font-bold text-l hover:text-slate-400" @click="handleCreateAnAccount" v-if="!showCreateAnAccount">Create An Account</button>
+                    <button class="Title font-bold text-l hover:text-slate-400" @click="handleCreateAnAccount" v-if="showCreateAnAccount">Back To Log In</button>
                     <div class="NameContainer flex justify-between w-full gap-2" v-if="showCreateAnAccount">
                         <h1 class="Title">Name:</h1>
                         <input class="LogInBarName px-2 shadow-lg" v-model="createUsername" placeholder="Type Username"/>

@@ -8,4 +8,5 @@ public class Room
     public string? RoomName {get; set;}
     public string? RoomDescription {get; set;}
     public int[]? RoomMembers {get; set;}
+    public int RoomAdmin { get; set; }
 }

@@ -86,6 +86,9 @@ namespace ChatRoom.Api.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("RoomAdmin")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("RoomDescription")
                         .HasColumnType("TEXT");
 
@@ -103,6 +106,7 @@ namespace ChatRoom.Api.Data.Migrations
                         new
                         {
                             RoomId = 1,
+                            RoomAdmin = 1,
                             RoomDescription = "Admin Only",
                             RoomMembers = "[1]",
                             RoomName = "Room 1"
@@ -110,6 +114,7 @@ namespace ChatRoom.Api.Data.Migrations
                         new
                         {
                             RoomId = 2,
+                            RoomAdmin = 2,
                             RoomDescription = "Developer Only",
                             RoomMembers = "[2,3]",
                             RoomName = "Room 2"
@@ -117,6 +122,7 @@ namespace ChatRoom.Api.Data.Migrations
                         new
                         {
                             RoomId = 3,
+                            RoomAdmin = 3,
                             RoomDescription = "Everyone",
                             RoomMembers = "[1,2,3]",
                             RoomName = "Room 3"

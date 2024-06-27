@@ -1,7 +1,59 @@
-GET http://localhost:5233/messages
+// Room --------------------------------------------------------//
+###
+GET http://localhost:5233/rooms/all
 
 ###
-DELETE http://localhost:5233/messages/
+GET http://localhost:5233/rooms/user1
+
+###
+GET http://localhost:5233/rooms/preview3
+
+###
+POST http://localhost:5233/rooms/create
+Content-Type: application/json
+
+{
+    "RoomName":"Test2",
+    "RoomDescription":"Test2",
+    "RoomMembers": [1],
+    "roomAdmin": 1
+}
+
+###
+PUT http://localhost:5233/rooms/add/room4/user2
+
+###
+DELETE http://localhost:5233/rooms/delete4
+
+// Users --------------------------------------------------------//
+###
+GET http://localhost:5233/users/all
+
+###
+POST http://localhost:5233/users/create
+Content-Type: application/json
+
+{
+    "UserName":"testperson",
+    "UserEmail":"test@test.com",
+    "UserPassword": "testperson"
+}
+
+###
+GET http://localhost:5233/users/login/email/password/admin@test.com/admin
+
+###
+DELETE http://localhost:5233/users/delete/email/password/test2@test.com/testperson
+
+// Message --------------------------------------------------------//
+###
+GET http://localhost:5233/messages/all
+
+###
+GET http://localhost:5233/messages/room3
+
+###
+DELETE http://localhost:5233/messages/delete9
 
 ###
 POST http://localhost:5233/messages/create
@@ -11,28 +63,4 @@ Content-Type: application/json
     "MessageUserId":"3",
     "MessageRoomId":"2",
     "MessageText":"test 2"
-}
-
-###
-GET http://localhost:5233/messages/3
-
-
-
-###
-GET http://localhost:5233/users
-
-###
-GET http://localhost:5233/rooms
-
-###
-GET http://localhost:5233/rooms/1
-
-###
-POST http://localhost:5233/rooms/create
-Content-Type: application/json
-
-{
-    "RoomName":"Test1",
-    "RoomDescription":"Description1",
-    "RoomMembers": [1, 2, 3]
 }

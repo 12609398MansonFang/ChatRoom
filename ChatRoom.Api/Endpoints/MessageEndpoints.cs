@@ -11,35 +11,56 @@ public static class MessageEndpoints
     public static RouteGroupBuilder MapMessageEndpoints(this WebApplication app){
         var group = app.MapGroup("messages");
 
-        group.MapGet("/", (ChatRoomContext dbContext) => 
+        // API to get All messages from the database
+        group.MapGet("/all", (ChatRoomContext dbContext) => 
         {
-            var messages = dbContext.Messages.ToList();
-            var messageDtos = messages.Select(message => message.ToDto());
-            return Results.Ok(messageDtos);
-        });
+            try{
+                var messages = dbContext.Messages.ToList();
+                var messageDto = messages.Select(message => message.ToDto());
+                return Results.Ok(messageDto);
 
-        group.MapGet("/{roomId}", (int roomId, ChatRoomContext dbContext) => {
-            var messages = dbContext.Messages
-                .Where(m => m.MessageRoomId == roomId)
-                .ToList();
-            var messageDtos = messages.Select(message => message.ToDto());
-            return Results.Ok(messageDtos);
-            });
-
-        group.MapDelete("/{id}", (int id, ChatRoomContext dbContext) => 
-        {
-            var message = dbContext.Messages.Find(id);
-            if (message == null)
-            {
-                return Results.NotFound();
             }
-
-            dbContext.Messages.Remove(message);
-            dbContext.SaveChanges();
-
-            return Results.NoContent();
+            catch (Exception ex) {
+                Console.WriteLine($"Error: {ex.Message}");
+                return Results.Problem("An error occurred while processing your request to get all messages.");
+            }  
         });
 
+        // API to get All messages specific to a room from the database
+        group.MapGet("/room{roomId}", (int roomId, ChatRoomContext dbContext) => 
+        {
+            try{
+                var messages = dbContext.Messages
+                    .Where(m => m.MessageRoomId == roomId)
+                    .ToList();
+                var messageDto = messages.Select(message => message.ToDto());
+                return Results.Ok(messageDto);
+            }
+            catch (Exception ex) {
+                Console.WriteLine($"Error: {ex.Message}");
+                return Results.Problem("An error occurred while processing your request to get all messages specific to a room.");
+            }  
+        });
+
+        // API to Delete a Specific Message
+        group.MapDelete("/delete{id}", (int id, ChatRoomContext dbContext) => 
+        {
+            try{
+                var message = dbContext.Messages.Find(id);
+                if (message == null){
+                    return Results.NotFound();
+                    }
+                dbContext.Messages.Remove(message);
+                dbContext.SaveChanges();
+                return Results.NoContent();
+            }
+            catch (Exception ex) {
+                Console.WriteLine($"Error: {ex.Message}");
+                return Results.Problem("An error occurred while processing your request delete message.");
+            }  
+        });
+
+        // API to create a Message
         group.MapPost("/create", (CreateMessageDto createMessageDto, ChatRoomContext dbContext) => 
         {
             try
@@ -65,12 +86,10 @@ public static class MessageEndpoints
             }
             catch (Exception ex)
             {
-                // Log the exception (you can use any logging framework, here we use Console for simplicity)
                 Console.WriteLine($"Error: {ex.Message}");
-                return Results.Problem("An error occurred while processing your request.");
+                return Results.Problem("An error occurred while processing your request to create this message.");
             }
         });
-        
         
         return group;
     }

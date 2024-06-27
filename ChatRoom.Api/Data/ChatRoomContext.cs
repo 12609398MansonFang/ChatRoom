@@ -26,9 +26,9 @@ public class ChatRoomContext(DbContextOptions<ChatRoomContext> options)
                 new User { UserId = 3, UserName = "FrontEnd", UserEmail = "frontend@test.com", UserPassword = "frontend" }
             );
             modelBuilder.Entity<Room>().HasData(
-                new Room { RoomId = 1, RoomName = "Room 1", RoomDescription = "Admin Only", RoomMembers = [1]},
-                new Room { RoomId = 2, RoomName = "Room 2", RoomDescription = "Developer Only", RoomMembers = [2,3]},
-                new Room { RoomId = 3, RoomName = "Room 3", RoomDescription = "Everyone", RoomMembers = [1,2,3]}
+                new Room { RoomId = 1, RoomName = "Room 1", RoomDescription = "Admin Only", RoomMembers = [1], RoomAdmin = 1},
+                new Room { RoomId = 2, RoomName = "Room 2", RoomDescription = "Developer Only", RoomMembers = [2,3], RoomAdmin = 2},
+                new Room { RoomId = 3, RoomName = "Room 3", RoomDescription = "Everyone", RoomMembers = [1,2,3], RoomAdmin = 3}
             );
         }
     

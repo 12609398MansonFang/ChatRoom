@@ -8,6 +8,6 @@ public static class RoomMapping
 {
     public static RoomDto ToDto(this Room room)
     {
-        return new RoomDto(room.RoomId, room.RoomName, room.RoomDescription, room.RoomMembers);
+        return new RoomDto(room.RoomId, room.RoomName, room.RoomDescription, room.RoomMembers, room.RoomAdmin);
     }
 }

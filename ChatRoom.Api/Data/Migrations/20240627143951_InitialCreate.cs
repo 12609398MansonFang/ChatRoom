@@ -35,7 +35,8 @@ namespace ChatRoom.Api.Data.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     RoomName = table.Column<string>(type: "TEXT", nullable: true),
                     RoomDescription = table.Column<string>(type: "TEXT", nullable: true),
-                    RoomMembers = table.Column<string>(type: "TEXT", nullable: true)
+                    RoomMembers = table.Column<string>(type: "TEXT", nullable: true),
+                    RoomAdmin = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -72,12 +73,12 @@ namespace ChatRoom.Api.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Rooms",
-                columns: new[] { "RoomId", "RoomDescription", "RoomMembers", "RoomName" },
+                columns: new[] { "RoomId", "RoomAdmin", "RoomDescription", "RoomMembers", "RoomName" },
                 values: new object[,]
                 {
-                    { 1, "Admin Only", "[1]", "Room 1" },
-                    { 2, "Developer Only", "[2,3]", "Room 2" },
-                    { 3, "Everyone", "[1,2,3]", "Room 3" }
+                    { 1, 1, "Admin Only", "[1]", "Room 1" },
+                    { 2, 2, "Developer Only", "[2,3]", "Room 2" },
+                    { 3, 3, "Everyone", "[1,2,3]", "Room 3" }
                 });
 
             migrationBuilder.InsertData(

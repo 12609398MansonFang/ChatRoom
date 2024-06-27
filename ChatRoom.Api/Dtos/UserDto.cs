@@ -4,4 +4,4 @@ public record class UserDto(int UserId, string? UserName, string? UserEmail, str
 
 public record class CreateUserDto(string? UserName, string? UserEmail, string? UserPassword);
 
-public record class LogIntoUserDto(string? UserEmail, string? UserPassword);
+public record class LogIntoUserDto(int UserId);

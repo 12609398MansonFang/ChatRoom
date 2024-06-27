@@ -9,21 +9,35 @@ public static class UserEndpoints
 {
     public static RouteGroupBuilder MapUserEndpoints(this WebApplication app){
         var group = app.MapGroup("users");
-
-        group.MapGet("/", (ChatRoomContext dbContext) => 
+        
+        // API to get All Users In the Database
+        group.MapGet("/all", (ChatRoomContext dbContext) => 
         {
-            var users = dbContext.Users.ToList();
-            var userDtos = users.Select(users => users.ToDto());
-            return Results.Ok(userDtos);
+            try {
+                var users = dbContext.Users.ToList();
+                var userDto = users.Select(users => users.ToDto());
+                return Results.Ok(userDto);
+            }
+            catch (Exception ex) {
+                Console.WriteLine($"Error: {ex.Message}");
+                return Results.Problem("An error occurred while processing your request to get all users.");
+            }            
         });
-
-        group.MapPost("/", (CreateUserDto createUserDto, ChatRoomContext dbContext) => 
+        
+        // API to Create a User
+        group.MapPost("/create", (CreateUserDto createUserDto, ChatRoomContext dbContext) => 
         {
             try
             {
-                if (createUserDto == null || string.IsNullOrEmpty(createUserDto.UserName))
+                if (createUserDto == null || string.IsNullOrEmpty(createUserDto.UserName) || string.IsNullOrEmpty(createUserDto.UserEmail))
                 {
                     return Results.BadRequest("Invalid User data.");
+                }
+
+                var existingUser = dbContext.Users.FirstOrDefault(u => u.UserEmail == createUserDto.UserEmail);
+                if (existingUser != null)
+                {
+                    return Results.Conflict("A user with the same email already exists.");
                 }
 
                 var user = new User
@@ -43,35 +57,50 @@ public static class UserEndpoints
             catch (Exception ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
-                return Results.Problem("An error occurred while processing your request.");
+                return Results.Problem("An error occurred while processing your request to create a user.");
             }
         });
 
-        group.MapPost("/login", (LogIntoUserDto logIntoUserDto, ChatRoomContext dbContext) => 
+        // API to Login by Entering Email and Password
+        group.MapGet("/login/email/password/{email}/{password}", (string email, string password, ChatRoomContext dbContext) =>
         {
             try
             {
-                var user = dbContext.Users.SingleOrDefault(u => u.UserEmail == logIntoUserDto.UserEmail);
+                var user = dbContext.Users.SingleOrDefault(u => u.UserEmail == email && u.UserPassword == password);
                 if (user == null)
                 {
-                    Console.WriteLine("User not found.");
-                    return Results.NotFound();
-                } else if (logIntoUserDto.UserPassword == user.UserPassword){
-                    Console.WriteLine("Password match. Fetching user data.");
-                    var userDto = user.ToDto();
-                    return Results.Ok(userDto);
-                } else {
-                    Console.WriteLine("Invalid password.");
-                    return Results.Unauthorized();
+                    return Results.NotFound($"User with email {email} not found or password incorrect.");
                 }
+                var logIntoUserDto = new LogIntoUserDto(user.UserId);
+                return Results.Ok(logIntoUserDto);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
-                return Results.Problem("An error occurred while processing your request.");
+                return Results.Problem("An error occurred while processing your request to login.");
             }
         });
 
+        // API to Delete Account by Entering Email and Password
+        group.MapDelete("/delete/email/password/{email}/{password}",(string email, string password, ChatRoomContext dbContext) => 
+        {
+            try {
+                var user = dbContext.Users.SingleOrDefault(u => u.UserEmail == email && u.UserPassword == password);
+                if (user == null)
+                {
+                    return Results.NotFound($"Credentials are incorrect");
+                }
+                dbContext.Users.Remove(user);
+                dbContext.SaveChanges();
+                return Results.NoContent();
+            } 
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return Results.Problem("An error occurred while processing your request to delete user.");
+            }
+        });
+        
         return group;
     }
 }

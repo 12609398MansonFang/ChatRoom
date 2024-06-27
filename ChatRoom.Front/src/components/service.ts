@@ -47,8 +47,12 @@ export async function loginUser(loginUser: User): Promise<void> {
   await axios.post(`${API_URL}/users/login`, loginUser.userEmail, loginUser.userPassword)
 }
 
-// Chats
+// Rooms
 export async function getRooms(Id: number): Promise<any[]> { 
   const response = await axios.get(`${API_URL}/rooms/${Id}`)
   return response.data;
+}
+
+export async function addRoom(inputRoom: Room): Promise<void> {
+  await axios.post(`${API_URL}/rooms/create`, inputRoom)
 }

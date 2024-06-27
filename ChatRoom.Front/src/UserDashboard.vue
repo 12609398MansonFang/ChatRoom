@@ -13,32 +13,48 @@
 
             </div>
 
-            <div class="RoomInterface h-full w-full shadow-md shadow-black p-2 flex flex-col gap-2" v-if="!showCreateRoom">
+            <div class="RoomInterface h-full w-full shadow-md shadow-black p-2 flex flex-col gap-2 overflow-y-scroll" v-if="!showCreateRoom">
                 <button class="w-full shadow-md shadow-black p-2 flex hover:bg-lime-200" @click="handleRoomClick(0)">Reset</button>
-                <button class="w-full shadow-md shadow-black p-2 flex hover:bg-lime-200" v-for="room in rooms" :key="room.roomId" @click="handleRoomClick(room.roomId)">
-                {{ room.roomName }} - {{ room.roomDescription }} - {{ room.roomId }}
-                </button>
+                <div v-for="room in rooms" :key="room.roomId">
+
+                    <div class="w-full shadow-md shadow-black flex justify-between bg-lime-300" v-if="room.roomId == rId">
+                        <button class="w-2/3 text-sm text-black hover:text-white p-2">{{ room.roomName }}</button>
+                        <button class="w-1/3 text-sm text-black hover:text-white p-2">Members</button>
+                    </div>
+                    <div class="w-full shadow-md shadow-black flex justify-between hover:bg-lime-200" v-else>
+                        <button class="w-2/3 text-sm text-black hover:text-white p-2" @click="handleRoomClick(room.roomId)" >{{ room.roomName }}</button>
+                        <button class="w-1/3 text-sm text-black hover:text-white p-2">Members</button>
+                    </div>
+
+                </div>
             </div>
 
             <div class="RoomInterface h-full w-full shadow-md shadow-black p-2 flex flex-col gap-2" v-else>
 
-                <div class="Create flex flex-col justify-center items-center gap-2">
+                <div class="Create flex flex-col h-full justify-center items-center gap-2">
                     <button class="Title font-bold text-l hover:text-slate-400">Create a Room</button>
                     <div class="NameContainer flex justify-between w-full gap-2">
                         <h1 class="Title">Name:</h1>
-                        <input class="LogInBarName px-2 shadow-sm shadow-black" placeholder="Type Room Name"/>
+                        <input class="LogInBarName px-2 shadow-sm shadow-black" v-model="inputRoomName" placeholder="Type Room Name"/>
                     </div>
                     <div class="DescriptionContainer flex justify-between w-full gap-2">
                         <h1 class="Title">Desc:</h1>
-                        <input class="LogInBarEmail px-2 shadow-sm shadow-black" placeholder="Type Description"/>
+                        <input class="LogInBarEmail px-2 shadow-sm shadow-black" v-model="inputRoomDescription" placeholder="Type Description"/>
                     </div>
-                    <div class="PeopleContainer flex flex-col w-full gap-2">
+                    <div class="PeopleContainer flex flex-col h-full w-full gap-2">
                         <h1 class="Title">Add Team:</h1>
-                        <div class="flex flex-col justify-center shadow-md shadow-black p-2 gap-1">
-                            <button class="shadow-sm shadow-black hover:bg-lime-100" v-for="user in users" :key="user.userId">{{user.userName}}</button>
+                        <div class="flex flex-col h-full justify-center shadow-md shadow-black p-2 gap-1 overflow-y-scroll">
+                            <div v-for="user in users" :key="user.userId">
+                                <div class="shadow-sm shadow-black bg-lime-100" v-if="checkSelected(user)">
+                                    <button class="w-full" v-if="user.userId != prop.propId" @click="toggleMemberSelection(user)">{{ user.userName }}</button>
+                                </div>
+                                <div class="shadow-sm shadow-black hover:bg-lime-100" v-if="!checkSelected(user)">
+                                    <button class="w-full" v-if="user.userId != prop.propId" @click="toggleMemberSelection(user)">{{ user.userName }}</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <button class="CreateButton text-sm shadow-lg p-2 hover:bg-lime-200 ">Create Account</button>
+                    <button class="CreateButton text-sm shadow-lg p-2 hover:bg-lime-200" @click="handleCreateRoomClick">Create Room</button>
                 </div>
 
             </div>
@@ -88,8 +104,8 @@
             <h1 class="font-bold text-2xl">Notifications</h1>
 
             <div class="overflow-y-scroll">
-                <div class="NotificationInterface" v-for="message in messages" :key="message.messageId">
-                    User: {{ message.messageUserId }} - Room: {{ message.messageRoomId }} - Message: {{ message.messageText }} 
+                <div class="NotificationInterface" v-for="room in rooms" :key="room.roomId">
+                    {{ room.roomId }} - {{ room.roomName }}
                 </div>
             </div>
         </div>
@@ -105,7 +121,7 @@ import { ref, onMounted, defineProps, defineEmits } from 'vue'
 
 import { sendMessage, getMessages, deleteMessage, getUserMessages} from '../src/components/service'
 import { getUsers } from '../src/components/service'
-import { getRooms } from '../src/components/service'
+import { getRooms, addRoom } from '../src/components/service'
 
 import type { Message } from '../src/types/message'
 import type { User } from '../src/types/user'
@@ -137,7 +153,13 @@ onMounted(async () => {
 let rooms = ref<any[]>([])
 let userMessages = ref<Message[]>([]) 
 
+const inputRoomName = ref<string>('')
+const inputRoomDescription= ref<string>('')
+const inputRoomMembers = ref<number[]>([])
+
+
 const showCreateRoom = ref<boolean>(false)
+
 const prop = defineProps<{ propId: number }>()
 const rId = ref<number>(0)
 
@@ -149,6 +171,47 @@ const handleRoomClick = async (roomId: number) => {
 const handleCreateRoom = () => {
     showCreateRoom.value = !showCreateRoom.value
 }
+
+const toggleMemberSelection  = (user: User) => {
+    if (inputRoomMembers.value.includes(user.userId)) {
+        inputRoomMembers.value = inputRoomMembers.value.filter(Id => Id !== user.userId)
+    } else {
+        inputRoomMembers.value.push(user.userId)
+    }
+}
+
+const checkSelected = (user: User) => {
+    if (inputRoomMembers.value.includes(user.userId)) {
+        return true
+    } else {
+        return false 
+    }
+}
+
+const handleCreateRoomClick = () => {
+    let newRoom: Room
+    if (inputRoomName.value.trim() !== '' && inputRoomDescription.value.trim() !== '' && inputRoomMembers.value.length > 0) {
+        if (rooms.value.length > 0){
+            inputRoomMembers.value.push(prop.propId)
+            const lastRoomId = rooms.value[rooms.value.length -1].roomId
+            newRoom = {roomId: lastRoomId + 1, roomName: inputRoomName.value, roomDescription: inputRoomDescription.value, roomMembers: inputRoomMembers.value}
+        } else {
+            newRoom = {roomId: 1, roomName: inputRoomName.value, roomDescription: inputRoomDescription.value, roomMembers: inputRoomMembers.value}
+
+        }
+        addRoom(newRoom)
+        rooms.value.push(newRoom)
+        inputRoomName.value = ''
+        inputRoomDescription.value = ''
+        inputRoomMembers.value = []
+    } else {
+        alert('Input Empty')
+        inputRoomName.value = ''
+        inputRoomDescription.value = ''
+        inputRoomMembers.value = []
+    }
+}
+    
 
 //Messages
 let messages = ref<Message[]>([]) 

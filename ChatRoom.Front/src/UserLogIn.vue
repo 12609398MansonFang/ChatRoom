@@ -46,7 +46,7 @@
 <script setup lang="ts">
 import { ref, onMounted, defineEmits} from 'vue'
 import type { User } from './types/user'
-import { addUser, getUsers, loginUser } from './components/service'
+import { addUser, getUsers} from './components/service'
 
 
 let users = ref<User[]>([])

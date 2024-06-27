@@ -26,3 +26,13 @@ GET http://localhost:5233/rooms
 
 ###
 GET http://localhost:5233/rooms/1
+
+###
+POST http://localhost:5233/rooms/create
+Content-Type: application/json
+
+{
+    "RoomName":"Test1",
+    "RoomDescription":"Description1",
+    "RoomMembers": [1, 2, 3]
+}

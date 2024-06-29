@@ -1,58 +1,40 @@
 import axios from 'axios'
 import type { Message } from '../types/message'
-import type { User } from '../types/user'
+import type { User, UserGeneral } from '../types/user'
 import type { Room } from '@/types/room'
 
 const API_URL = 'http://localhost:5233'
 
-// Messages
+// USERS
 
-export async function getMessages(): Promise<Message[]> {
-  const response = await axios.get<Message[]>(`${API_URL}/messages`)
-  return response.data;
-}
-
-export async function getUserMessages( roomId: number ): Promise<Message[]> {
-  const response = await axios.get(`${API_URL}/messages/${roomId}`)
-  return response.data;
-}
-
-export async function sendMessage(inputMessage: Message): Promise<void> {
-  await axios.post(`${API_URL}/messages/create`, inputMessage)
-}
-
-export async function deleteMessage(messageId: number): Promise<void> {
+// - login using email and password as input 
+export async function loginUser(inputEmail: string, inputPassword: string): Promise<any> {
   try {
-    await axios.delete(`${API_URL}/messages/${messageId}`);
-    console.log('Message deleted successfully!');
-    // Perform any additional logic after successful deletion
+    const response = await axios.get(`${API_URL}/users/login/email/password/${encodeURIComponent(inputEmail)}/${encodeURIComponent(inputPassword)}`)
+    return response.data
   } catch (error) {
-    console.error('Error deleting message:', error);
-    // Handle error if deletion fails
+    console.error('Credentials Incorrect', error)
+    throw error    
   }
 }
 
-// Users
-
-export async function getUsers(): Promise<User[]>{
-  const response = await axios.get<User[]>(`${API_URL}/users`)
+// - get all general user information
+export async function getUsers(): Promise<UserGeneral[]>{
+  const response = await axios.get<UserGeneral[]>(`${API_URL}/users/all`)
   return response.data;
 }
 
-export async function addUser(inputUser: User): Promise<void> {
-  await axios.post(`${API_URL}/users`, inputUser)
+// - create an account 
+export async function createUser(inputUser: User): Promise<any> {
+  await axios.post(`${API_URL}/users/create`, inputUser)
 }
 
-export async function loginUser(loginUser: User): Promise<void> {
-  await axios.post(`${API_URL}/users/login`, loginUser.userEmail, loginUser.userPassword)
-}
+// ROOMS
 
-// Rooms
-export async function getRooms(Id: number): Promise<any[]> { 
-  const response = await axios.get(`${API_URL}/rooms/${Id}`)
+// - get the rooms specific to the user that just logged in
+export async function getRooms(Id: number): Promise<Room[]> { 
+  const response = await axios.get(`${API_URL}/rooms/user${Id}`)
   return response.data;
 }
 
-export async function addRoom(inputRoom: Room): Promise<void> {
-  await axios.post(`${API_URL}/rooms/create`, inputRoom)
-}
+// - get the rooms specific to the user that just logged in

@@ -35,7 +35,7 @@ Content-Type: application/json
 
 {
     "UserName":"testperson",
-    "UserEmail":"test@test.com",
+    "UserEmail":"test3@test.com",
     "UserPassword": "testperson"
 }
 
@@ -43,7 +43,7 @@ Content-Type: application/json
 GET http://localhost:5233/users/login/email/password/admin@test.com/admin
 
 ###
-DELETE http://localhost:5233/users/delete/email/password/test2@test.com/testperson
+DELETE http://localhost:5233/users/delete/email/password/Test/test
 
 // Message --------------------------------------------------------//
 ###

@@ -3,4 +3,5 @@ export interface Room {
     roomName: any | null
     roomDescription: any | null
     roomMembers: any | null
+    roomAdmin: any | null
 }

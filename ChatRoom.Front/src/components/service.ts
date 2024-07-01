@@ -1,7 +1,7 @@
 import axios from 'axios'
 import type { Message } from '../types/message'
-import type { User, UserGeneral } from '../types/user'
-import type { Room } from '@/types/room'
+import type { User, UserGeneral} from '../types/user'
+import type { Room, AddRemoveUserRoom } from '@/types/room'
 
 const API_URL = 'http://localhost:5233'
 
@@ -37,4 +37,35 @@ export async function getRooms(Id: number): Promise<Room[]> {
   return response.data;
 }
 
-// - get the rooms specific to the user that just logged in
+// - create a room with details that have been inserted
+export async function createRoom(room: Room): Promise<void> {
+  await axios.post(`${API_URL}/rooms/create`, room)
+}
+
+// - add users from rooms
+export async function addUsers(addRemoveUserRoom : AddRemoveUserRoom): Promise<any> {
+  await axios.put(`${API_URL}/rooms/add/member`, addRemoveUserRoom)
+}
+
+// - remove users from rooms
+export async function kickUsers(addRemoveUserRoom : AddRemoveUserRoom): Promise<any> {
+  await axios.post(`${API_URL}/rooms/remove/member`, addRemoveUserRoom)
+}
+
+// MESSAGES
+
+// - get all messages
+export async function getMessages(): Promise<Message[]> {
+  const response = await axios.get<Message[]>(`${API_URL}/messages/all`)
+  return response.data;
+}
+
+// - creates message 
+export async function sendMessage(inputMessage: Message): Promise<void> {
+  await axios.post(`${API_URL}/messages/create`, inputMessage)
+}
+
+// - deletes message
+export async function deleteMessage(messageId: number): Promise<void> {
+    await axios.delete(`${API_URL}/messages/delete${messageId}`);
+}

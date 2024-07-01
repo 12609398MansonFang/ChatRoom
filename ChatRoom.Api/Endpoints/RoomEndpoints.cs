@@ -93,30 +93,38 @@ public static class RoomEndpoints
         });
 
         //API to add User to a Room
-        group.MapPut("/add/room{roomId}/user{userId}", (int roomId, int userId, ChatRoomContext dbContext) => 
+        group.MapPut("/add/member", async (AddMemberDto addMemberDto, ChatRoomContext dbContext) => 
         {
             try {
-                var room = dbContext.Rooms.FirstOrDefault(r => r.RoomId == roomId);
+                var room = await dbContext.Rooms.FirstOrDefaultAsync(r => r.RoomId == addMemberDto.RoomId);
                 if (room == null)
                 {
-                    return Results.NotFound($"Room with ID {roomId} not found.");
+                    return Results.NotFound($"Room with ID {addMemberDto.RoomId} not found.");
                 }
+
+                if (addMemberDto.RoomMembers == null || addMemberDto.RoomMembers.Length == 0)
+                {
+                    return Results.BadRequest("No members to add.");
+                }
+
 
                 if (room.RoomMembers == null)
                 {
-                    room.RoomMembers = new int[] { userId };
-                }
-                else if (!room.RoomMembers.Contains(userId))
-                {
-                    room.RoomMembers = room.RoomMembers.Append(userId).ToArray();
+                    room.RoomMembers = addMemberDto.RoomMembers;
                 }
                 else
                 {
-                    return Results.BadRequest("User is already a member of the room.");
+                    var newMembers = addMemberDto.RoomMembers.Except(room.RoomMembers).ToArray();
+                    if (newMembers.Length == 0)
+                    {
+                        return Results.BadRequest("All users are already members of the room.");
+                    }
+
+                    room.RoomMembers = room.RoomMembers.Concat(newMembers).ToArray();
                 }
 
-                dbContext.SaveChanges();
-                
+                await dbContext.SaveChangesAsync();
+
                 var roomDto = room.ToDto();
                 return Results.Ok(roomDto);
             }
@@ -126,6 +134,50 @@ public static class RoomEndpoints
             }
         });
 
+        //API to remove User to a Room
+        group.MapPut("/remove/member", async (RemoveMemberDto removeMemberDto, ChatRoomContext dbContext) =>
+        {
+            try
+            {
+                var room = await dbContext.Rooms.FirstOrDefaultAsync(r => r.RoomId == removeMemberDto.RoomId);
+                if (room == null)
+                {
+                    return Results.NotFound($"Room with ID {removeMemberDto.RoomId} not found.");
+                }
+
+                if (removeMemberDto.RoomMembers == null || removeMemberDto.RoomMembers.Length == 0)
+                {
+                    return Results.BadRequest("No members to remove.");
+                }
+
+                if (room.RoomMembers == null)
+                {
+                    return Results.BadRequest("The room has no members to remove.");
+                }
+                else
+                {
+                    var remainingMembers = room.RoomMembers.Except(removeMemberDto.RoomMembers).ToArray();
+                    if (remainingMembers.Length == room.RoomMembers.Length)
+                    {
+                        return Results.BadRequest("None of the specified users are members of the room.");
+                    }
+
+                    room.RoomMembers = remainingMembers;
+                }
+
+                await dbContext.SaveChangesAsync();
+
+                var roomDto = room.ToDto();
+                return Results.Ok(roomDto);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return Results.Problem("An error occurred while processing your request to remove users from the room.");
+            }
+        });
+        
+        
         //API to Delete Rooms
         group.MapDelete("/delete{roomId}", (int roomId, ChatRoomContext dbContext) => 
         {

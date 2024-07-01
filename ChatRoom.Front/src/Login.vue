@@ -51,7 +51,7 @@ import type { User, UserGeneral } from './types/user'
 
 let userGeneral = ref<UserGeneral[]>([])
 
-const uId = ref<number>(null)
+const uId = ref<number>(0)
 const showCreateAnAccount = ref <boolean>(false)
 
 const emitCustomEvents = defineEmits(['loggedIn', 'userId'])
@@ -102,22 +102,16 @@ const handleCreateUserClick = async () => {
         } else {
             newUser = {userId: 1, userName: inputCreateUserName.value, userEmail: inputCreateUserName.value, userPassword: inputCreatePassword.value}
         }
-        try {
-            const response = await createUser(newUser)
-            if (response.status === 201){
-                userGeneral.value.push(newUser)
-            }
-        } catch (error) {
-            alert('An error occurred while creating the user.')
-        }
+        createUser(newUser)
+        userGeneral.value.push(newUser)
         inputCreateUserName.value = ''
         inputCreateEmail.value = ''
         inputCreatePassword.value = ''
     } else {
-        alert('Inputs Empty')
+        alert('Input Empty')
         inputCreateUserName.value = ''
         inputCreateEmail.value = ''
-        inputCreatePassword.value = ''     
+        inputCreatePassword.value = ''
     }
 }
 

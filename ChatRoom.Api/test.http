@@ -20,7 +20,22 @@ Content-Type: application/json
 }
 
 ###
-PUT http://localhost:5233/rooms/add/room4/user2
+PUT http://localhost:5233/rooms/add/member
+Content-Type: application/json
+
+{
+    "RoomId":"1",
+    "RoomMembers":[1]
+}
+
+###
+PUT http://localhost:5233/rooms/remove/member
+Content-Type: application/json
+
+{
+    "RoomId":"1",
+    "RoomMembers":[2,3,4]
+}
 
 ###
 DELETE http://localhost:5233/rooms/delete4
@@ -43,7 +58,7 @@ Content-Type: application/json
 GET http://localhost:5233/users/login/email/password/admin@test.com/admin
 
 ###
-DELETE http://localhost:5233/users/delete/email/password/Test/test
+DELETE http://localhost:5233/users/delete/email/password/test6.com/test
 
 // Message --------------------------------------------------------//
 ###

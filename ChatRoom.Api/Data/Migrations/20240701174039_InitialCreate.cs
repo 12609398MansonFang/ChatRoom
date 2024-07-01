@@ -63,12 +63,9 @@ namespace ChatRoom.Api.Data.Migrations
                 columns: new[] { "MessageId", "MessageRoomId", "MessageText", "MessageUserId" },
                 values: new object[,]
                 {
-                    { 1, 1, "This message is for Admins", 1 },
-                    { 2, 2, "This message is for Developers", 2 },
-                    { 3, 2, "This message is for Developers", 3 },
-                    { 4, 3, "This message is for Everyone", 1 },
-                    { 5, 3, "This message is for Everyone", 2 },
-                    { 6, 3, "This message is for Everyone", 3 }
+                    { 1, 1, "This message is from Admins", 1 },
+                    { 2, 2, "This message is from BackEnd", 2 },
+                    { 3, 3, "This message is from FrontEnd", 3 }
                 });
 
             migrationBuilder.InsertData(
@@ -76,9 +73,9 @@ namespace ChatRoom.Api.Data.Migrations
                 columns: new[] { "RoomId", "RoomAdmin", "RoomDescription", "RoomMembers", "RoomName" },
                 values: new object[,]
                 {
-                    { 1, 1, "Admin Only", "[1]", "Room 1" },
-                    { 2, 2, "Developer Only", "[2,3]", "Room 2" },
-                    { 3, 3, "Everyone", "[1,2,3]", "Room 3" }
+                    { 1, 1, "Admin is Admin", "[1]", "Admin Room" },
+                    { 2, 2, "BackEnd is Admin", "[2]", "BackEnd Room" },
+                    { 3, 3, "FrontEnd is Admin", "[3]", "FrontEnd Room" }
                 });
 
             migrationBuilder.InsertData(

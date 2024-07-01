@@ -5,3 +5,8 @@ export interface Room {
     roomMembers: any | null
     roomAdmin: any | null
 }
+
+export interface AddRemoveUserRoom {
+    roomId: any
+    roomMembers: any | null
+}

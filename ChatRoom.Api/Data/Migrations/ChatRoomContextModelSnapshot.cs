@@ -40,42 +40,21 @@ namespace ChatRoom.Api.Data.Migrations
                         {
                             MessageId = 1,
                             MessageRoomId = 1,
-                            MessageText = "This message is for Admins",
+                            MessageText = "This message is from Admins",
                             MessageUserId = 1
                         },
                         new
                         {
                             MessageId = 2,
                             MessageRoomId = 2,
-                            MessageText = "This message is for Developers",
+                            MessageText = "This message is from BackEnd",
                             MessageUserId = 2
                         },
                         new
                         {
                             MessageId = 3,
-                            MessageRoomId = 2,
-                            MessageText = "This message is for Developers",
-                            MessageUserId = 3
-                        },
-                        new
-                        {
-                            MessageId = 4,
                             MessageRoomId = 3,
-                            MessageText = "This message is for Everyone",
-                            MessageUserId = 1
-                        },
-                        new
-                        {
-                            MessageId = 5,
-                            MessageRoomId = 3,
-                            MessageText = "This message is for Everyone",
-                            MessageUserId = 2
-                        },
-                        new
-                        {
-                            MessageId = 6,
-                            MessageRoomId = 3,
-                            MessageText = "This message is for Everyone",
+                            MessageText = "This message is from FrontEnd",
                             MessageUserId = 3
                         });
                 });
@@ -107,25 +86,25 @@ namespace ChatRoom.Api.Data.Migrations
                         {
                             RoomId = 1,
                             RoomAdmin = 1,
-                            RoomDescription = "Admin Only",
+                            RoomDescription = "Admin is Admin",
                             RoomMembers = "[1]",
-                            RoomName = "Room 1"
+                            RoomName = "Admin Room"
                         },
                         new
                         {
                             RoomId = 2,
                             RoomAdmin = 2,
-                            RoomDescription = "Developer Only",
-                            RoomMembers = "[2,3]",
-                            RoomName = "Room 2"
+                            RoomDescription = "BackEnd is Admin",
+                            RoomMembers = "[2]",
+                            RoomName = "BackEnd Room"
                         },
                         new
                         {
                             RoomId = 3,
                             RoomAdmin = 3,
-                            RoomDescription = "Everyone",
-                            RoomMembers = "[1,2,3]",
-                            RoomName = "Room 3"
+                            RoomDescription = "FrontEnd is Admin",
+                            RoomMembers = "[3]",
+                            RoomName = "FrontEnd Room"
                         });
                 });
 
